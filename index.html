@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GoogleLogin(ポップアップ/server)</title>
+    <meta name="google-signin-client_id" content="foo.apps.googleusercontent.com ">
+
+    <script type="text/javascript">
+        function setOAuthId() {
+            const oauthId = OAuthIdForm.OAuthId.value;
+
+            if (oauthId.length > 0) {
+                document.getElementById('err').innerHTML = '';
+
+                document.querySelector("meta[name='google-signin-client_id']").setAttribute("content", oauthId);
+                var script = document.createElement('script');
+                script.src = "https://apis.google.com/js/platform.js";
+                document.head.appendChild(script);
+            } else {
+                document.getElementById('err').innerHTML = '入力欄が空欄です';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <script>
+        function onSignIn(googleUser) {
+            var idToken = googleUser.getAuthResponse().id_token;
+            document.getElementById('idToken').innerHTML = idToken;
+        }
+    </script>
+
+
+    <form name="OAuthIdForm">
+        <input type="text" name="OAuthId" placeholder="xxxx.apps.googleusercontent.com" style="width:50%;">
+        <button type="button" onclick="setOAuthId()">OAuthIDを指定</button>
+    </form>
+
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <div id='idToken' style="width:100%;word-break: break-all;">
+    </div>
+    <div id="err"></div>
+</body>
+
+</html>
